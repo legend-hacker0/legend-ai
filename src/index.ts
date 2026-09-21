@@ -129,12 +129,24 @@ async function handleFileRequest(
       );
     }
 
-    const result = await env.AI.toMarkdown({
-      name: file.name,
-      blob: new Blob([await file.arrayBuffer()], {
-        type: file.type || "application/octet-stream",
-      }),
-    });
+    const result = await env.AI.toMarkdown(
+  {
+    name: file.name,
+    blob: new Blob([await file.arrayBuffer()], {
+      type: file.type || "application/octet-stream",
+    }),
+  },
+  {
+    conversionOptions: {
+      output: {
+        format: "text",
+      },
+      pdf: {
+        metadata: false,
+      },
+    },
+  },
+);
 
     const converted = Array.isArray(result) ? result[0] : result;
 
