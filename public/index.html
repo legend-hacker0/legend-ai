@@ -2041,7 +2041,7 @@ Clear Leaderboard
 </div>
 <div id="legendFileChip" class="legend-file-chip"><span></span><button onclick="legendClearFile()" title="Remove file">×</button></div>
 <div class="legend-ai-input-box">
-<input id="legendFileInput" class="legend-file-input" type="file" onchange="legendUploadFile(this.files[0])">
+<input id="legendFileInput" class="legend-file-input" type="file" multiple onchange="legendUploadFile(this.files)">
 <label class="legend-attach" for="legendFileInput" title="Attach a file">＋</label>
 <textarea id="legendAIInput" rows="1" placeholder="Message Legend AI..." onkeydown="legendAIKey(event)" oninput="legendResize(this)"></textarea>
 <button class="legend-send" onclick="legendSend()">➤</button>
