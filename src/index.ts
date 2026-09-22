@@ -112,22 +112,24 @@ async function handleFileRequest(
 ): Promise<Response> {
   try {
     const formData = await request.formData();
-    const file = formData.get("file");
+const files = formData.getAll("file").filter(
+  (item): item is File => item instanceof File
+);
 
-    if (!(file instanceof File)) {
-      return new Response(
-        JSON.stringify({
-          error: "No file was uploaded.",
-        }),
-        {
-          status: 400,
-          headers: {
-            ...CORS_HEADERS,
-            "Content-Type": "application/json",
-          },
-        },
-      );
-    }
+if (files.length === 0) {
+  return new Response(
+    JSON.stringify({
+      error: "No file was uploaded.",
+    }),
+    {
+      status: 400,
+      headers: {
+        ...CORS_HEADERS,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+}
 
     const result = await env.AI.toMarkdown(
   {
