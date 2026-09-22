@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="theme-color" content="#000000">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ⓞⓟ ⓗⓐⓒⓚⓔⓡ𓃵❀</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:url('https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1600') center center/cover no-repeat;
+transition:0.5s;
+}
+
+.login-box{
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(12px);
+padding:40px;
+border-radius:20px;
+text-align:center;
+width:350px;
+color:white;
+box-shadow:0 8px 32px rgba(0,0,0,.25);
+}
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:none;
+border-radius:10px;
+}
+
+button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+#error{
+margin-top:10px;
+color:#ffd1d1;
+}
+
+#successPage{
+display:none;
+text-align:center;
+color:white;
+padding:20px;
+}
+
+#successPage h1{
+margin-bottom:20px;
+}
+
+#successPage img{
+max-width:90%;
+width:700px;
+border-radius:20px;
+}
+
+@keyframes float{
+0%{transform:translateY(0);}
+50%{transform:translateY(-15px);}
+100%{transform:translateY(0);}
+}
+
+#gameCanvas,
+#surferCanvas{
+touch-action:none;
+}
+
+#loginPage{
+width:100%;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+position:relative;
+}
+
+#mainTitle{
+position:absolute;
+top:40px;
+width:100%;
+text-align:center;
+font-size:32px;
+font-weight:bold;
+color:#00ffff;
+text-shadow:
+0 0 10px #00ffff,
+0 0 20px #00ffff,
+0 0 30px #00ffff;
+animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+from{transform:scale(1);}
+to{transform:scale(1.05);}
+}
+
+/* LOGIN COUNTER */
+#loginCounter{
+margin-top:15px;
+background:rgba(0,0,0,0.65);
+backdrop-filter:blur(10px);
+color:#00ffff;
+padding:10px 15px;
+border-radius:12px;
+font-size:16px;
+font-weight:bold;
+border:1px solid rgba(0,255,255,0.5);
+box-shadow:
+0 0 10px rgba(0,255,255,0.4),
+0 0 20px rgba(0,255,255,0.2);
+white-space:nowrap;
+}
+
+#loginCount{
+color:white;
+font-size:20px;
+}
+</style>
+</head>
+
+<body id="bodyBg">
+
+<div id="loginPage">
+
+<h3 id="mainTitle">
+★ WELCOME TO ⓞⓟ ⓗⓐⓒⓚⓔⓡ𓃵❀'S WEBSITE ★
+</h3>
+
+<div class="login-box">
+
+<h1>Login</h1>
+
+<input type="text" id="playerName" placeholder="Your Name">
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+<div id="loginCounter">
+👥 Total Logins: <span id="loginCount">0</span>
+</div>
+
+<p id="error"></p>
+
+</div>
+
+</div>
+
+<div id="successPage" style="display:none;text-align:center;color:white;padding:20px">
+
+<h1>LET'S MAKE TIME PASS</h1>
+
+<img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200" alt="Friends">
+
+<br><br>
+
+<h2>Enter Pincode</h2>
+
+<input type="password" id="pincode" placeholder="Enter Pincode">
+
+<button onclick="checkPin()">Continue</button>
+
+<p id="pinError"></p>
+
+</div>
+
+<div id="gorillaPage" style="display:none;text-align:center;color:white;padding:20px">
+
+<h1>Final Stage</h1>
+
+<img
+src="https://images.unsplash.com/photo-1540573133985-87b6da6d54a9?w=1200"
+alt="Gorilla"
+style="max-width:90%;width:700px;border-radius:20px;animation:float 2s infinite;">
+
+<h2>Enter to Legend Snake</h2>
+
+<button onclick="startSnake()">
+Enter Snake
+</button>
+
+<br><br>
+
+<h2>Enter to Legend Surfer</h2>
+
+<button onclick="startSurfer()">
+Enter Surfer
+</button>
+
+<br><br>
+
+<h2>Enter to Legend AI</h2>
+
+<button onclick="openLegendAI()">
+Enter Legend AI
+</button>
+
+</div>
+
+<div id="snakePage" style="display:none;text-align:center;color:white;padding:20px">
+
+<h1>Legend Snake</h1>
+
+<canvas id="gameCanvas" width="400" height="400"
+style="background:black;border:3px solid white;">
+</canvas>
+
+<h2 id="score">Score: 0</h2>
+<h2 id="snakeBestScore">Best: 0</h2>
+
+<button onclick="restartGame()"
+style="padding:10px 20px;border:none;border-radius:10px;cursor:pointer;font-size:16px;">
+Restart Game
+</button>
+
+<button onclick="toggleMusic()">
+Music On/Off
+</button>
+
+<button onclick="backToFinalStage()">
+Go Back
+</button>
+
+<button type="button" onclick="openSnakeLeaderboard()">
+Show Leaderboard
+</button>
+
+<button onclick="openGames()">
+More Games
+</button>
+
+</div>
+
+<script>
+
+let currentPlayer = "";
+let paused = false;
+let gameOver = false;
+
+let leaderboard =
+JSON.parse(localStorage.getItem("leaderboard")) || [];
+
+function login(){
+
+const name =
+document.getElementById('playerName').value.trim();
+
+const u =
+document.getElementById('username').value;
+
+const p =
+document.getElementById('password').value;
+
+if(name===""){
+
+document.getElementById('error').innerText =
+'Enter your name';
+
+return;
+
+}
+
+if(u==='legend' && p==='legend123'){
+
+countLogin();
+
+document.getElementById("bgMusic").play();
+
+currentPlayer = name;
+
+document.getElementById('loginPage').style.display='none';
+
+document.getElementById('successPage').style.display='block';
+
+document.getElementById('bodyBg').style.background =
+"url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1600') center center / cover no-repeat";
+
+}else{
+
+document.getElementById('error').innerText =
+'Invalid username or password';
+
+}
+
+}
+
+function checkPin(){
+
+const pin =
+document.getElementById('pincode').value;
+
+if(pin==='321'){
+
+document.getElementById('successPage').style.display='none';
+
+document.getElementById('gorillaPage').style.display='block';
+
+document.getElementById('bodyBg').style.background =
+"url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1600') center center / cover no-repeat";
+
+}else{
+
+document.getElementById('pinError').innerText='Wrong Pincode';
+
+}
+
+}
+
+function saveScore(name, score){
+
+db.ref("leaderboard").push({
+name:name,
+score:score
+}).catch(function(error){
+
+console.error(
+"Failed to save Snake score:",
+error
+);
+
+});
+
+}
+
+function loadLeaderboard(){
+
+const table =
+document.getElementById("leaderboardTable");
+
+db.ref("leaderboard").off();
+
+db.ref("leaderboard").on("value", function(snapshot){
+
+let data = snapshot.val();
+let players = [];
+
+if(data){
+
+for(let key in data){
+
+if(
+data[key] &&
+typeof data[key].score === "number"
+){
+
+players.push(data[key]);
+
+}
+
+}
+
+}
+
+players.sort((a,b)=>b.score-a.score);
+
+players = players.slice(0,10);
+
+table.innerHTML = `
+<tr>
+<th style="border:1px solid white;padding:10px;">Rank</th>
+<th style="border:1px solid white;padding:10px;">Name</th>
+<th style="border:1px solid white;padding:10px;">Score</th>
+</tr>
+`;
+
+if(players.length === 0){
+
+table.innerHTML += `
+<tr>
+<td colspan="3"
+style="border:1px solid white;padding:10px;">
+No scores yet
+</td>
+</tr>`;
+
+return;
+
+}
+
+players.forEach((player,index)=>{
+
+const rank =
+index===0 ? "🥇" :
+index===1 ? "🥈" :
+index===2 ? "🥉" :
+index+1;
+
+table.innerHTML += `
+<tr>
+<td style="border:1px solid white;padding:10px;">
+${rank}
+</td>
+
+<td style="border:1px solid white;padding:10px;">
+${player.name}
+</td>
+
+<td style="border:1px solid white;padding:10px;">
+${player.score}
+</td>
+</tr>
+`;
+
+});
+
+}, function(error){
+
+console.error(
+"Failed to load Snake leaderboard:",
+error
+);
+
+table.innerHTML =
+`<tr>
+<td colspan="3" style="padding:15px;">
+Unable to load leaderboard
+</td>
+</tr>`;
+
+});
+
+}
+
+function restartGame(){
+
+document.getElementById('snakePage').style.display='none';
+
+document.getElementById('snakePage').style.display='block';
+
+startSnake();
+
+}
+
+function saveBest(name, score){
+
+db.ref("bestscores/"+name).once("value")
+.then(snapshot=>{
+
+let oldScore = snapshot.val();
+
+if(oldScore===null || score>oldScore){
+
+db.ref("bestscores/"+name).set(score);
+
+}
+
+});
+
+}
+
+function loadSnakeBestScore(){
+
+db.ref("bestscores/" + currentPlayer).once("value")
+.then(snapshot=>{
+
+let best = snapshot.val() || 0;
+
+document.getElementById("snakeBestScore").innerText =
+"Best: " + best;
+
+});
+
+}
+
+function clearBoard(){
+
+let pass = prompt("Admin Password");
+
+if(pass === "legendadmin"){
+
+db.ref("leaderboard").remove()
+
+.then(function(){
+
+alert("Snake leaderboard cleared");
+
+})
+
+.catch(function(error){
+
+console.error(
+"Failed to clear Snake leaderboard:",
+error
+);
+
+alert("Failed to clear Snake leaderboard");
+
+});
+
+}else if(pass !== null){
+
+alert("Wrong Admin Password");
+
+}
+
+}
+
+function clearSurferLeaderboard(){
+
+let pass = prompt("Admin Password");
+
+if(pass === "legendadmin"){
+
+db.ref("surferLeaderboard").remove()
+
+.then(function(){
+
+alert("Surfer leaderboard cleared");
+
+})
+
+.catch(function(error){
+
+console.error(
+"Failed to clear Surfer leaderboard:",
+error
+);
+
+alert("Failed to clear Surfer leaderboard");
+
+});
+
+}else if(pass !== null){
+
+alert("Wrong Admin Password");
+
+}
+
+}
+
+function openGames(){
+
+window.open(
+"https://poki.com",
+"_blank"
+);
+
+}
+
+function openSurferLeaderboard(){
+
+loadSurferLeaderboard();
+
+document.getElementById("surferPage").style.display = "none";
+
+document.getElementById("surferLeaderboardPage").style.display = "block";
+
+document.getElementById("bodyBg").style.background =
+"url('https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1600') center center / cover no-repeat";
+
+}
+
+function backToSurferGame(){
+
+document.getElementById("surferLeaderboardPage").style.display = "none";
+
+document.getElementById("surferPage").style.display = "block";
+
+document.getElementById("bodyBg").style.background =
+"url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1600') center center / cover no-repeat";
+
+}
+
+function toggleSurferLeaderboard(){
+
+const box =
+document.getElementById("leaderboardBox");
+
+const btn = event.target;
+
+if(box.style.display === "none"){
+
+box.style.display = "block";
+
+btn.innerText = "Hide Leaderboard";
+
+}else{
+
+box.style.display = "none";
+
+btn.innerText = "Show Leaderboard";
+
+}
+
+}
+
+function toggleMusic(){
+
+const music =
+document.getElementById("bgMusic");
+
+if(music.paused){
+
+music.play();
+
+}else{
+
+music.pause();
+
+}
+
+}
+
+function backToFinalStage(){
+
+document.getElementById("snakePage").style.display="none";
+
+document.getElementById("surferPage").style.display="none";
+
+document.getElementById("snakeLeaderboardPage").style.display="none";
+
+document.getElementById("surferLeaderboardPage").style.display="none";
+
+document.getElementById("gorillaPage").style.display="block";
+
+}
+
+function restartSurfer(){
+
+location.hash = "";
+
+document.getElementById("surferPage").style.display="none";
+
+setTimeout(()=>{
+
+document.getElementById("surferPage").style.display="block";
+
+startSurfer();
+
+},100);
+
+}
+
+function saveSurferScore(name,score){
+
+console.log(
+"Saving surfer score",
+name,
+score
+);
+
+db.ref("surferLeaderboard").push({
+
+name:name,
+score:score
+
+});
+
+}
+
+function loadSurferBestScore(){
+
+db.ref("surferLeaderboard").once(
+"value",
+(snapshot)=>{
+
+let data = snapshot.val();
+
+let best = 0;
+
+if(data){
+
+for(let key in data){
+
+if(data[key].name === currentPlayer){
+
+best =
+Math.max(
+best,
+data[key].score
+);
+
+}
+
+}
+
+}
+
+document.getElementById(
+"surferBestScore"
+).innerText =
+"Best: " + best;
+
+});
+
+}
+
+function loadSurferLeaderboard(){
+
+const table =
+document.getElementById("surferLeaderboard");
+
+db.ref("surferLeaderboard").off();
+
+db.ref("surferLeaderboard").on(
+"value",
+(snapshot)=>{
+
+let data=snapshot.val();
+
+let players=[];
+
+if(data){
+
+for(let key in data){
+
+if(
+data[key] &&
+typeof data[key].score === "number"
+){
+
+players.push(data[key]);
+
+}
+
+}
+
+}
+
+players.sort((a,b)=>b.score-a.score);
+
+players=players.slice(0,10);
+
+table.innerHTML=`
+<tr>
+
+<th style="border:1px solid white;padding:10px;">
+Rank
+</th>
+
+<th style="border:1px solid white;padding:10px;">
+Name
+</th>
+
+<th style="border:1px solid white;padding:10px;">
+Score
+</th>
+
+</tr>
+`;
+
+if(players.length === 0){
+
+table.innerHTML += `
+<tr>
+
+<td colspan="3"
+style="border:1px solid white;padding:10px;">
+No scores yet
+</td>
+
+</tr>
+`;
+
+return;
+
+}
+
+players.forEach((player,index)=>{
+
+const rank =
+index===0 ? "🥇" :
+index===1 ? "🥈" :
+index===2 ? "🥉" :
+index+1;
+
+table.innerHTML+=`
+<tr>
+
+<td style="border:1px solid white;padding:10px;">
+${rank}
+</td>
+
+<td style="border:1px solid white;padding:10px;">
+${player.name}
+</td>
+
+<td style="border:1px solid white;padding:10px;">
+${player.score}
+</td>
+
+</tr>
+`;
+
+});
+
+},
+function(error){
+
+console.error(
+"Failed to load Surfer leaderboard:",
+error
+);
+
+table.innerHTML =
+`<tr>
+<td colspan="3" style="padding:15px;">
+Unable to load leaderboard
+</td>
+</tr>`;
+
+});
+
+}
+
+function togglePause(){
+
+paused = !paused;
+
+document.getElementById("pauseBtn").innerText =
+paused ? "Resume" : "Pause";
+
+}
+
+function startSurfer(){
+
+paused = false;
+
+gameOver = false;
+
+document.getElementById("pauseBtn").innerText =
+"Pause";
+
+loadSurferLeaderboard();
+
+loadSurferBestScore();
+
+document.documentElement.requestFullscreen?.();
+
+document.getElementById('gorillaPage').style.display='none';
+
+document.getElementById('surferPage').style.display='block';
+
+const canvas =
+document.getElementById("surferCanvas");
+
+canvas.style.touchAction = "none";
+
+const ctx =
+canvas.getContext("2d");
+
+let lane = 1;
+
+let targetX = 180;
+
+let score = 0;
+
+let obstacleSpeed = 4;
+
+let player = {
+
+x:180,
+y:540,
+w:25,
+h:25
+
+};
+
+let obstacles = [];
+
+document.addEventListener(
+"keydown",
+function(e){
+
+if(e.key==="ArrowLeft" && lane>0){
+
+lane--;
+
+}
+
+if(e.key==="ArrowRight" && lane<2){
+
+lane++;
+
+}
+
+targetX =
+40 + lane*140;
+
+});
+
+let startX = 0;
+
+canvas.addEventListener(
+"touchstart",
+function(e){
+
+e.preventDefault();
+
+startX =
+e.touches[0].clientX;
+
+},
+{passive:false}
+);
+
+canvas.addEventListener(
+"touchend",
+function(e){
+
+e.preventDefault();
+
+let endX =
+e.changedTouches[0].clientX;
+
+let diff =
+endX - startX;
+
+if(diff > 40 && lane < 2){
+
+lane++;
+
+}
+
+if(diff < -40 && lane > 0){
+
+lane--;
+
+}
+
+targetX =
+40 + lane * 140;
+
+},
+{passive:false}
+);
+
+function draw(){
+
+if(gameOver) return;
+
+if(paused){
+
+requestAnimationFrame(draw);
+
+return;
+
+}
+
+ctx.fillStyle="black";
+
+ctx.fillRect(
+0,
+0,
+400,
+600
+);
+
+player.x = targetX;
+
+ctx.fillStyle="lime";
+
+ctx.fillRect(
+player.x,
+player.y,
+player.w,
+player.h
+);
+
+if(Math.random()<0.015){
+
+obstacles.push({
+
+x:
+40 + Math.floor(Math.random()*3)*140,
+
+y:-60,
+
+w:25,
+
+h:25
+
+});
+
+}
+
+ctx.fillStyle="red";
+
+for(
+let i=obstacles.length-1;
+i>=0;
+i--
+){
+
+let o =
+obstacles[i];
+
+o.y +=
+obstacleSpeed;
+
+ctx.fillRect(
+o.x,
+o.y,
+o.w,
+o.h
+);
+
+if(
+
+player.x < o.x + o.w &&
+
+player.x + player.w > o.x &&
+
+player.y < o.y + o.h &&
+
+player.y + player.h > o.y
+
+){
+
+saveSurferScore(
+currentPlayer,
+score
+);
+
+setTimeout(
+loadSurferBestScore,
+1000
+);
+
+loadSurferLeaderboard();
+
+alert(
+"Game Over! Score: " +
+score
+);
+
+document.getElementById(
+"restartSurferBtn"
+).style.display =
+"inline-block";
+
+gameOver = true;
+
+return;
+
+}
+
+if(o.y > 600){
+
+obstacles.splice(
+i,
+1
+);
+
+score++;
+
+if(score % 10 === 0){
+
+obstacleSpeed += 0.5;
+
+}
+
+document.getElementById(
+"surferScore"
+).innerText =
+"Score: " + score;
+
+}
+
+}
+
+requestAnimationFrame(draw);
+
+}
+
+draw();
+
+}
+
+function openSnakeLeaderboard(){
+
+document.getElementById(
+"snakePage"
+).style.display = "none";
+
+document.getElementById(
+"snakeLeaderboardPage"
+).style.display = "block";
+
+document.getElementById(
+"bodyBg"
+).style.background =
+"url('https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1600') center center / cover no-repeat";
+
+loadLeaderboard();
+
+}
+
+function backToSnakeGame(){
+
+document.getElementById(
+"snakeLeaderboardPage"
+).style.display = "none";
+
+document.getElementById(
+"snakePage"
+).style.display = "block";
+
+document.getElementById(
+"bodyBg"
+).style.background =
+"url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1600') center center / cover no-repeat";
+
+}
+
+function startSnake(){
+
+document.documentElement.requestFullscreen?.();
+
+loadLeaderboard();
+
+loadSnakeBestScore();
+
+document.getElementById(
+'bodyBg'
+).style.background =
+"url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1600') center center / cover no-repeat";
+
+document.getElementById(
+'gorillaPage'
+).style.display='none';
+
+document.getElementById(
+'snakePage'
+).style.display='block';
+
+const canvas =
+document.getElementById("gameCanvas");
+
+const ctx =
+canvas.getContext("2d");
+
+canvas.style.touchAction =
+"none";
+
+const box = 20;
+
+let snake = [
+
+{x:10 * box,y:10 * box}
+
+];
+
+let foods = [
+
+{
+x:
+Math.floor(Math.random()*20)*box,
+y:
+Math.floor(Math.random()*20)*box
+},
+
+{
+x:
+Math.floor(Math.random()*20)*box,
+y:
+Math.floor(Math.random()*20)*box
+}
+
+];
+
+let score = 0;
+
+let direction = "RIGHT";
+
+document.getElementById(
+"score"
+).innerText =
+"Score: 0";
+
+function changeDirection(event){
+
+if(
+event.key==="ArrowLeft" &&
+direction!=="RIGHT"
+)
+
+direction="LEFT";
+
+if(
+event.key==="ArrowUp" &&
+direction!=="DOWN"
+)
+
+direction="UP";
+
+if(
+event.key==="ArrowRight" &&
+direction!=="LEFT"
+)
+
+direction="RIGHT";
+
+if(
+event.key==="ArrowDown" &&
+direction!=="UP"
+)
+
+direction="DOWN";
+
+}
+
+document.addEventListener(
+"keydown",
+changeDirection
+);
+
+let startX = 0;
+
+let startY = 0;
+
+canvas.addEventListener(
+"touchstart",
+function(e){
+
+e.preventDefault();
+
+startX =
+e.touches[0].clientX;
+
+startY =
+e.touches[0].clientY;
+
+},
+{passive:false}
+);
+
+canvas.addEventListener(
+"touchmove",
+function(e){
+
+e.preventDefault();
+
+},
+{passive:false}
+);
+
+canvas.addEventListener(
+"touchend",
+function(e){
+
+e.preventDefault();
+
+let endX =
+e.changedTouches[0].clientX;
+
+let endY =
+e.changedTouches[0].clientY;
+
+let dx =
+endX - startX;
+
+let dy =
+endY - startY;
+
+if(Math.abs(dx)>Math.abs(dy)){
+
+if(
+dx > 30 &&
+direction !== "LEFT"
+){
+
+direction =
+"RIGHT";
+
+}
+
+if(
+dx < -30 &&
+direction !== "RIGHT"
+){
+
+direction =
+"LEFT";
+
+}
+
+}else{
+
+if(
+dy > 30 &&
+direction !== "UP"
+){
+
+direction =
+"DOWN";
+
+}
+
+if(
+dy < -30 &&
+direction !== "DOWN"
+){
+
+direction =
+"UP";
+
+}
+
+}
+
+},
+{passive:false}
+);
+
+function draw(){
+
+ctx.fillStyle =
+"black";
+
+ctx.fillRect(
+0,
+0,
+400,
+400
+);
+
+for(
+let i=0;
+i<snake.length;
+i++
+){
+
+ctx.fillStyle =
+(i===0)
+?
+"#00ff00"
+:
+"#00aa00";
+
+ctx.beginPath();
+
+ctx.arc(
+
+snake[i].x + box/2,
+
+snake[i].y + box/2,
+
+box/2,
+
+0,
+
+Math.PI * 2
+
+);
+
+ctx.fill();
+
+}
+
+foods.forEach(
+food => {
+
+ctx.fillStyle =
+"red";
+
+ctx.beginPath();
+
+ctx.arc(
+
+food.x + box/2,
+
+food.y + box/2,
+
+box/2,
+
+0,
+
+Math.PI*2
+
+);
+
+ctx.fill();
+
+});
+
+let snakeX =
+snake[0].x;
+
+let snakeY =
+snake[0].y;
+
+if(
+direction==="LEFT"
+)
+snakeX -= box;
+
+if(
+direction==="RIGHT"
+)
+snakeX += box;
+
+if(
+direction==="UP"
+)
+snakeY -= box;
+
+if(
+direction==="DOWN"
+)
+snakeY += box;
+
+let ateFood = false;
+
+for(
+let i=0;
+i<foods.length;
+i++
+){
+
+if(
+snakeX===foods[i].x &&
+snakeY===foods[i].y
+){
+
+score++;
+
+document.getElementById(
+"score"
+).innerText =
+"Score: " + score;
+
+foods[i] = {
+
+x:
+Math.floor(Math.random()*20)*box,
+
+y:
+Math.floor(Math.random()*20)*box
+
+};
+
+ateFood = true;
+
+break;
+
+}
+
+}
+
+if(!ateFood){
+
+snake.pop();
+
+}
+
+let newHead = {
+
+x:snakeX,
+y:snakeY
+
+};
+
+if(
+
+snakeX < 0 ||
+
+snakeY < 0 ||
+
+snakeX >= 400 ||
+
+snakeY >= 400
+
+){
+
+clearInterval(game);
+
+saveScore(
+currentPlayer,
+score
+);
+
+saveBest(
+currentPlayer,
+score
+);
+
+setTimeout(
+loadSnakeBestScore,
+500
+);
+
+alert(
+"Game Over!\nPlayer: " +
+currentPlayer +
+"\nScore: " +
+score
+);
+
+return;
+
+}
+
+snake.unshift(newHead);
+
+}
+
+let game =
+setInterval(
+draw,
+130
+);
+
+}
+
+</script>
+
+
+<script>
+/* Legend AI — keyless web-search assistant.
+   No Gemini/OpenAI API key is required. It searches public web sources directly
+   from the browser and presents the retrieved facts with source links. */
+let legendAIHistory=[];
+let legendAIAbort=null;
+
+function legendAISettings(show=true){
+const box=document.getElementById("legendAISetup");
+if(!box)return;
+if(show===false){box.style.display="none";return}
+box.style.display="block";
+}
+function legendSaveApiKey(){legendAISettings(false)}
+function legendClearApiKey(){legendAISettings(false)}
+
+function openLegendAI(){
+document.getElementById("gorillaPage").style.display="none";
+document.getElementById("surferPage").style.display="none";
+document.getElementById("snakePage").style.display="none";
+document.getElementById("surferLeaderboardPage").style.display="none";
+document.getElementById("snakeLeaderboardPage").style.display="none";
+document.getElementById("legendAIPage").style.display="block";
+document.getElementById("bodyBg").style.background="linear-gradient(135deg,#02040a,#07111f 50%,#03030a)";
+document.getElementById("legendAIInput").focus();
+}
+function closeLegendAI(){
+if(legendAIAbort)legendAIAbort.abort();
+document.getElementById("legendAIPage").style.display="none";
+document.getElementById("legendAISetup").style.display="none";
+document.getElementById("gorillaPage").style.display="block";
+document.getElementById("bodyBg").style.background="url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1600') center center / cover no-repeat";
+}
+function legendAddMessage(text,type){
+const chat=document.getElementById("legendAIChat");
+const welcome=chat.querySelector(".legend-ai-welcome");
+if(welcome)welcome.remove();
+const row=document.createElement("div");row.className="legend-msg "+type;
+const bubble=document.createElement("div");bubble.className="legend-bubble";bubble.textContent=text;
+row.appendChild(bubble);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;return bubble;
+}
+function legendAddRichMessage(title,answer,sources=[]){
+const chat=document.getElementById("legendAIChat");
+const welcome=chat.querySelector(".legend-ai-welcome");if(welcome)welcome.remove();
+const row=document.createElement("div");row.className="legend-msg ai";
+const bubble=document.createElement("div");bubble.className="legend-bubble";
+if(title){const h=document.createElement("div");h.style.fontWeight="700";h.style.marginBottom="8px";h.textContent=title;bubble.appendChild(h)}
+const body=document.createElement("div");body.style.whiteSpace="pre-wrap";body.textContent=answer;bubble.appendChild(body);
+if(sources.length){
+const box=document.createElement("div");box.style.marginTop="12px";box.style.paddingTop="9px";box.style.borderTop="1px solid rgba(255,255,255,.12)";
+const lab=document.createElement("div");lab.textContent="Sources";lab.style.fontSize="11px";lab.style.opacity=".65";lab.style.marginBottom="5px";box.appendChild(lab);
+sources.slice(0,5).forEach((src,i)=>{const a=document.createElement("a");a.href=src.url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=(i+1)+". "+(src.title||src.url);a.style.display="block";a.style.color="#73ffff";a.style.fontSize="12px";a.style.margin="4px 0";box.appendChild(a)});
+bubble.appendChild(box);
+}
+row.appendChild(bubble);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;
+return bubble;
+}
+function legendTyping(){
+const chat=document.getElementById("legendAIChat");
+const row=document.createElement("div");row.className="legend-msg ai";row.id="legendTypingRow";
+row.innerHTML='<div class="legend-bubble"><span class="legend-typing"><i></i><i></i><i></i></span></div>';
+chat.appendChild(row);chat.scrollTop=chat.scrollHeight;
+}
+function legendRemoveTyping(){const row=document.getElementById("legendTypingRow");if(row)row.remove()}
+function legendQuick(text){document.getElementById("legendAIInput").value=text;legendSend()}
+function legendResize(el){el.style.height="auto";el.style.height=Math.min(el.scrollHeight,130)+"px"}
+function legendAIKey(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();legendSend()}}
+
+function legendLooksLikeSearchQuestion(q){
+return /\b(latest|today|current|now|news|price|cost|weather|score|result|release|version|update|who is|what is|when is|where is|how much|how many|202[0-9]|india|bangalore|bengaluru|download|official|website|review|compare|meaning|definition)\b/i.test(q);
+}
+function legendCleanText(s){return String(s||"").replace(/<[^>]*>/g," ").replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&amp;/g,"&").replace(/\s+/g," ").trim()}
+function legendDecode(s){const t=document.createElement("textarea");t.innerHTML=String(s||"");return t.value}
+
+async function legendDuckSearch(q,signal){
+const url="https://api.duckduckgo.com/?q="+encodeURIComponent(q)+"&format=json&no_html=1&skip_disambig=1&no_redirect=1";
+const r=await fetch(url,{signal,headers:{Accept:"application/json"}});
+if(!r.ok)throw new Error("Search service unavailable");
+const d=await r.json();
+const out=[];
+if(d.AbstractText)out.push({title:d.Heading||"Web result",text:legendCleanText(d.AbstractText),url:d.AbstractURL||"https://duckduckgo.com/?q="+encodeURIComponent(q)});
+if(d.Answer)out.push({title:"Direct answer",text:legendCleanText(d.Answer),url:d.AbstractURL||"https://duckduckgo.com/?q="+encodeURIComponent(q)});
+function walk(items){if(!Array.isArray(items))return;for(const x of items){if(x.Topics)walk(x.Topics);else if(x.Text){const parts=String(x.Text).split(" - ");out.push({title:legendCleanText(parts[0]||"Web result"),text:legendCleanText(parts.slice(1).join(" - ")||x.Text),url:x.FirstURL||"https://duckduckgo.com/?q="+encodeURIComponent(q)});}}}
+walk(d.RelatedTopics);
+return out.slice(0,8);
+}
+
+async function legendWikiSearch(q,signal){
+const url="https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch="+encodeURIComponent(q)+"&gsrnamespace=0&gsrlimit=5&prop=extracts|info&exintro=1&explaintext=1&inprop=url&format=json&origin=*";
+const r=await fetch(url,{signal,headers:{Accept:"application/json"}});
+if(!r.ok)throw new Error("Wikipedia unavailable");
+const d=await r.json();const pages=Object.values(d?.query?.pages||{});
+return pages.map(p=>({title:p.title,text:legendCleanText(p.extract||""),url:p.fullurl||("https://en.wikipedia.org/wiki/"+encodeURIComponent(String(p.title||"").replace(/ /g,"_")))})).filter(x=>x.text).slice(0,5);
+}
+
+async function legendSearchWeb(q,signal){
+const results=[];
+const settled=await Promise.allSettled([legendDuckSearch(q,signal),legendWikiSearch(q,signal)]);
+for(const item of settled)if(item.status==="fulfilled")results.push(...item.value);
+const seen=new Set();return results.filter(x=>{const k=x.url+"|"+x.text;if(seen.has(k))return false;seen.add(k);return true}).slice(0,10);
+}
+
+function legendMakeAnswer(q,results){
+if(!results.length)return {title:"I couldn't find a direct web answer",answer:"I searched the available public web sources, but they did not return a useful result for this question. Try adding a name, place, product, date, or a few more keywords.",sources:[{title:"Search the web",url:"https://www.google.com/search?q="+encodeURIComponent(q)}]};
+const useful=results.filter(x=>x.text&&x.text.length>30).slice(0,4);
+let answer="";
+if(useful.length===1){answer=useful[0].text;}
+else{
+answer=useful.map((x,i)=>"• "+x.text).join("\n\n");
+}
+if(answer.length>3500)answer=answer.slice(0,3497)+"...";
+return {title:useful[0]?.title||"Web answer",answer,sources:results.slice(0,5).map(x=>({title:x.title,url:x.url}))};
+}
+
+async function legendAskWeb(userText){
+legendRemoveTyping();legendTyping();
+if(legendAIAbort)legendAIAbort.abort();
+legendAIAbort=new AbortController();
+try{
+let results=await legendSearchWeb(userText,legendAIAbort.signal);
+/* A second, simpler query helps when the first wording returns nothing. */
+if(!results.length && userText.split(/\s+/).length>4){
+const simple=userText.replace(/[^a-zA-Z0-9\s?'-]/g," ").replace(/\s+/g," ").trim().split(" ").slice(0,10).join(" ");
+if(simple&&simple!==userText)results=await legendSearchWeb(simple,legendAIAbort.signal);
+}
+legendRemoveTyping();
+const a=legendMakeAnswer(userText,results);
+legendAddRichMessage(a.title,a.answer,a.sources);
+legendAIHistory.push({role:"assistant",content:a.answer});
+}catch(e){
+legendRemoveTyping();
+if(e.name==="AbortError")return;
+legendAddRichMessage("Web search is temporarily unavailable","The search service did not respond. You can try again in a moment, or open the full web search below.",[ {title:"Google Search",url:"https://www.google.com/search?q="+encodeURIComponent(userText)} ]);
+}
+}
+
+let legendAttachedFiles=[];
+const LEGEND_MAX_FILES=10;
+const LEGEND_MAX_FILE_SIZE=20*1024*1024;
+const LEGEND_MAX_FILE_TEXT=60000;
+const LEGEND_MAX_TOTAL_FILE_TEXT=120000;
+
+async function legendUploadFiles(fileList){
+const files=Array.from(fileList||[]);
+if(!files.length)return;
+if(files.length>LEGEND_MAX_FILES){legendAddRichMessage("Too many files","You can upload up to "+LEGEND_MAX_FILES+" files at once.");return;}
+for(const file of files){
+if(file.size>LEGEND_MAX_FILE_SIZE){legendAddRichMessage("File too large",file.name+" is larger than 20 MB.");return;}
+}
+const panel=document.getElementById("legendFilePanel");
+const status=document.getElementById("legendFileStatus");
+const list=document.getElementById("legendFileList");
+panel.style.display="block";
+status.textContent="Reading "+files.length+" file"+(files.length===1?"":"s")+"...";
+try{
+const form=new FormData();
+files.forEach(f=>form.append("file",f,f.name));
+const r=await fetch("https://legend-ai.harshanoob87093.workers.dev/api/file",{method:"POST",body:form});
+const data=await r.json().catch(()=>({}));
+if(!r.ok||data.error)throw new Error(data.error||"File reading failed");
+legendAttachedFiles=Array.isArray(data.files)?data.files.map(x=>({name:x.name||"file",type:x.type||"",text:String(x.text||"").slice(0,LEGEND_MAX_FILE_TEXT)})):[];
+list.innerHTML="";
+legendAttachedFiles.forEach(x=>{const d=document.createElement("div");d.textContent="📄 "+x.name;d.style.margin="3px 0";list.appendChild(d)});
+const total=legendAttachedFiles.reduce((n,x)=>n+x.text.length,0);
+status.textContent="✓ "+legendAttachedFiles.length+" file"+(legendAttachedFiles.length===1?"":"s")+" ready"+(total>LEGEND_MAX_TOTAL_FILE_TEXT?" (text will be limited)":"")+". Ask Legend AI about them.";
+}catch(e){status.textContent="❌ "+(e.message||"Could not read the files.");legendAttachedFiles=[];}
+}
+
+function legendClearFiles(){
+legendAttachedFiles=[];
+const panel=document.getElementById("legendFilePanel");
+const input=document.getElementById("legendFileInput");
+if(panel)panel.style.display="none";
+if(input)input.value="";
+}
+
+function legendAskAboutFiles(question){
+const usable=legendAttachedFiles.filter(x=>x.text).map(x=>"FILE: "+x.name+"\n"+x.text).join("\n\n---\n\n").slice(0,LEGEND_MAX_TOTAL_FILE_TEXT);
+if(!usable){legendAddRichMessage("No readable file content","Please upload a PDF, DOCX, TXT, or another supported file first.");return;}
+legendTyping();
+fetch("https://legend-ai.harshanoob87093.workers.dev/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({playerName:currentPlayer||"friend",messages:[{role:"system",content:"You are Legend AI. Answer questions about the provided files. Use the provided file content for file-specific claims. If the files do not contain the answer, say that clearly."},{role:"user",content:"Uploaded files:\n\n"+usable+"\n\nQuestion: "+question}]})})
+.then(r=>r.json().then(d=>({ok:r.ok,data:d})))
+.then(({ok,data})=>{if(!ok||data.error)throw new Error(data.error||"AI request failed");const answer=data.response||data.result||data.text||data.output_text||"I could not generate an answer.";legendRemoveTyping();legendAddRichMessage("About your files",String(answer));})
+.catch(e=>{legendRemoveTyping();legendAddRichMessage("File question failed",e.message||"Could not ask Legend AI about the files.");});
+}
+
+let legendAudioTranscript="";
+let legendAudioName="";
+const LEGEND_MAX_AUDIO_SIZE=25*1024*1024;
+
+async function legendUploadAudio(fileList){
+const file=fileList&&fileList[0];
+if(!file)return;
+const panel=document.getElementById("legendAudioPanel");
+const player=document.getElementById("legendAudioPlayer");
+const name=document.getElementById("legendAudioName");
+const status=document.getElementById("legendAudioStatus");
+const transcript=document.getElementById("legendAudioTranscript");
+panel.style.display="block";
+transcript.style.display="none";
+legendAudioTranscript="";
+legendAudioName=file.name;
+name.textContent=file.name+" · "+(file.size/1024/1024).toFixed(2)+" MB";
+player.src=URL.createObjectURL(file);player.style.display="block";
+if(file.size>LEGEND_MAX_AUDIO_SIZE){status.textContent="Audio is too large. Maximum supported size is 25 MB.";return;}
+status.textContent="Uploading audio and creating transcript...";
+try{
+const form=new FormData();form.append("file",file,file.name);
+const r=await fetch("https://legend-ai.harshanoob87093.workers.dev/api/audio",{method:"POST",body:form});
+const data=await r.json().catch(()=>({}));
+if(!r.ok||data.error)throw new Error(data.error||"Audio transcription failed");
+legendAudioTranscript=String(data.transcript||"").trim();
+if(!legendAudioTranscript)throw new Error("No speech was detected in this audio.");
+status.textContent="✓ Audio transcribed successfully. You can now ask Legend AI about it.";
+transcript.textContent=legendAudioTranscript;transcript.style.display="block";
+}catch(e){status.textContent="❌ "+(e.message||"Could not transcribe this audio.");}
+}
+
+async function legendAskAboutAudio(question){
+if(!legendAudioTranscript){legendAddRichMessage("No audio transcript","Upload and transcribe an audio file first.");return;}
+legendTyping();
+try{
+const r=await fetch("https://legend-ai.harshanoob87093.workers.dev/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({playerName:currentPlayer||"friend",messages:[{role:"system",content:"You are Legend AI. Answer questions about the provided audio transcript. Use only the transcript for claims about the audio. If the transcript does not contain the answer, say that clearly."},{role:"user",content:"Audio file: "+legendAudioName+"\n\nTranscript:\n"+legendAudioTranscript+"\n\nQuestion: "+question}]})});
+const data=await r.json().catch(()=>({}));
+if(!r.ok||data.error)throw new Error(data.error||"AI request failed");
+const answer=data.response||data.result||data.text||data.output_text||"I could not generate an answer.";
+legendRemoveTyping();legendAddRichMessage("About your audio",String(answer));
+}catch(e){legendRemoveTyping();legendAddRichMessage("Audio question failed",e.message||"Could not ask Legend AI about this audio.");}
+}
+
+function legendSend(){
+const input=document.getElementById("legendAIInput");const text=input.value.trim();if(!text)return;
+legendAddMessage(text,"user");legendAIHistory.push({role:"user",content:text});input.value="";input.style.height="auto";if(legendAudioTranscript){legendAskAboutAudio(text);}else if(legendAttachedFiles.length){legendAskAboutFiles(text);}else{legendAskWeb(text);}
+}
+</script>
+
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script>
+
+const firebaseConfig = {
+
+apiKey:
+"AIzaSyBFgjJV52bU90Yf30jBmNlp3zEunKnPin4",
+
+authDomain:
+"legend-snake.firebaseapp.com",
+
+databaseURL:
+"https://legend-snake-default-rtdb.firebaseio.com",
+
+projectId:
+"legend-snake",
+
+storageBucket:
+"legend-snake.firebasestorage.app",
+
+messagingSenderId:
+"863458646547",
+
+appId:
+"1:863458646547:web:0cb23575f4eb908a2a3de6"
+
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db =
+firebase.database();
+
+function loadLoginCount(){
+
+db.ref(
+"loginStats/totalLogins"
+).on(
+"value",
+function(snapshot){
+
+const count =
+snapshot.val() || 0;
+
+document.getElementById(
+"loginCount"
+).innerText =
+count;
+
+});
+
+}
+
+function countLogin(){
+
+const loginRef =
+db.ref(
+"loginStats/totalLogins"
+);
+
+loginRef.transaction(
+function(currentCount){
+
+return (
+currentCount || 0
+) + 1;
+
+});
+
+}
+
+loadLoginCount();
+
+</script>
+
+<div id="surferPage"
+style="
+display:none;
+text-align:center;
+color:white;
+padding:20px;
+">
+
+<h1>Legend Surfer</h1>
+
+<canvas
+id="surferCanvas"
+width="400"
+height="800"
+style="
+background:black;
+border:3px solid white;
+width:95vw;
+max-width:500px;
+height:75vh;
+">
+</canvas>
+
+<h2 id="surferScore">
+Score: 0
+</h2>
+
+<h2 id="surferBestScore">
+Best: 0
+</h2>
+
+<br>
+
+<button
+id="restartSurferBtn"
+onclick="restartSurfer()">
+Restart Game
+</button>
+
+<button onclick="toggleMusic()">
+Music On/Off
+</button>
+
+<button onclick="backToFinalStage()">
+Go Back
+</button>
+
+<button
+id="pauseBtn"
+onclick="togglePause()">
+Pause
+</button>
+
+<button onclick="openGames()">
+More Games
+</button>
+
+<button onclick="openSurferLeaderboard()">
+Show Leaderboard
+</button>
+
+</div>
+
+<div
+id="surferLeaderboardPage"
+style="
+display:none;
+text-align:center;
+color:white;
+padding:20px;
+min-height:100vh;
+width:100%;
+background:url('https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1600') center center/cover no-repeat;
+">
+
+<h1>
+Surfer Leaderboard
+</h1>
+
+<table
+id="surferLeaderboard"
+style="
+margin:auto;
+color:white;
+border-collapse:collapse;
+width:90%;
+max-width:500px;
+background:rgba(0,0,0,0.65);
+">
+
+<tr>
+
+<th style="border:1px solid white;padding:10px;">
+Rank
+</th>
+
+<th style="border:1px solid white;padding:10px;">
+Name
+</th>
+
+<th style="border:1px solid white;padding:10px;">
+Score
+</th>
+
+</tr>
+
+</table>
+
+<br>
+
+<button onclick="backToSurferGame()">
+Back To Game
+</button>
+
+<button onclick="clearSurferLeaderboard()">
+Clear Leaderboard
+</button>
+
+</div>
+
+<div
+id="snakeLeaderboardPage"
+style="
+display:none;
+text-align:center;
+color:white;
+padding:20px;
+min-height:100vh;
+width:100%;
+background:url('https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1600') center center/cover no-repeat;
+">
+
+<h1>
+Snake Leaderboard
+</h1>
+
+<table
+id="leaderboardTable"
+style="
+margin:auto;
+color:white;
+border-collapse:collapse;
+background:rgba(0,0,0,0.65);
+">
+
+<tr>
+
+<th style="border:1px solid white;padding:8px;">
+Rank
+</th>
+
+<th style="border:1px solid white;padding:8px;">
+Name
+</th>
+
+<th style="border:1px solid white;padding:8px;">
+Score
+</th>
+
+</tr>
+
+</table>
+
+<br>
+
+<button onclick="backToSnakeGame()">
+Back To Game
+</button>
+
+<button onclick="clearBoard()">
+Clear Leaderboard
+</button>
+
+</div>
+
+
+<div id="legendAIPage" style="display:none;position:fixed;inset:0;z-index:9999;color:white;background:radial-gradient(circle at 20% 10%,rgba(0,255,255,.16),transparent 30%),radial-gradient(circle at 80% 90%,rgba(140,0,255,.18),transparent 35%),linear-gradient(135deg,#02040a,#07111f 50%,#03030a);font-family:Arial,sans-serif;overflow:hidden">
+<style>
+#legendAIPage *{box-sizing:border-box}
+.legend-ai-shell{width:100%;height:100%;display:flex;flex-direction:column}
+.legend-ai-top{height:72px;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(0,255,255,.22);background:rgba(0,0,0,.38);backdrop-filter:blur(15px)}
+.legend-ai-brand{display:flex;align-items:center;gap:12px}
+.legend-ai-orb{width:45px;height:45px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:18px;color:#00ffff;border:1px solid rgba(0,255,255,.7);box-shadow:0 0 15px rgba(0,255,255,.5),inset 0 0 12px rgba(0,255,255,.2);animation:legendOrb 1.8s infinite alternate}
+@keyframes legendOrb{from{transform:scale(1)}to{transform:scale(1.06);box-shadow:0 0 28px rgba(0,255,255,.8)}}
+.legend-ai-name{font-size:20px;font-weight:800}.legend-ai-status{font-size:12px;color:#73ffff;margin-top:2px}
+.legend-ai-back{width:auto;padding:9px 14px;color:white;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.25)}
+.legend-ai-chat{flex:1;width:100%;max-width:900px;margin:0 auto;padding:20px 14px 12px;overflow-y:auto;scroll-behavior:smooth}
+.legend-ai-welcome{text-align:center;padding:18px 10px 28px;opacity:.95}.legend-ai-welcome h1{font-size:clamp(28px,7vw,52px);margin-bottom:8px;color:#00ffff;text-shadow:0 0 12px rgba(0,255,255,.65)}.legend-ai-welcome p{opacity:.72;font-size:14px}
+.legend-msg{display:flex;margin:10px 0;animation:legendMsgIn .16s ease-out}.legend-msg.user{justify-content:flex-end}
+@keyframes legendMsgIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.legend-bubble{max-width:min(82%,700px);padding:12px 15px;border-radius:18px;line-height:1.45;font-size:15px;white-space:pre-wrap;word-break:break-word}
+.legend-msg.user .legend-bubble{background:linear-gradient(135deg,#007f87,#005c78);border-bottom-right-radius:5px;box-shadow:0 5px 20px rgba(0,0,0,.22)}
+.legend-msg.ai .legend-bubble{background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.12);border-bottom-left-radius:5px}
+.legend-ai-input-wrap{width:100%;max-width:900px;margin:0 auto;padding:10px 14px 14px}
+.legend-ai-input-box{display:flex;align-items:flex-end;gap:8px;padding:8px;border:1px solid rgba(0,255,255,.3);border-radius:18px;background:rgba(0,0,0,.5);backdrop-filter:blur(12px);box-shadow:0 0 20px rgba(0,255,255,.08)}
+#legendAIInput{flex:1;min-width:0;max-height:130px;resize:none;border:0;outline:0;padding:10px;color:white;background:transparent;font-size:15px;font-family:Arial,sans-serif}
+#legendAIInput::placeholder{color:rgba(255,255,255,.42)}
+.legend-send{width:46px!important;height:46px;padding:0!important;border-radius:14px!important;background:#00b7c7;color:#001014;font-size:20px}
+.legend-quick{display:flex;gap:7px;overflow-x:auto;padding:8px 1px 2px;scrollbar-width:none}.legend-quick::-webkit-scrollbar{display:none}
+.legend-quick button{width:auto;white-space:nowrap;padding:8px 11px;font-size:12px;background:rgba(255,255,255,.07);color:white;border:1px solid rgba(255,255,255,.13)}
+.legend-typing{display:inline-flex;gap:4px;align-items:center;padding:4px 2px}.legend-typing i{width:6px;height:6px;border-radius:50%;background:#00ffff;animation:legendDot .8s infinite}.legend-typing i:nth-child(2){animation-delay:.12s}.legend-typing i:nth-child(3){animation-delay:.24s}
+@keyframes legendDot{0%,60%,100%{opacity:.25;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+@media(max-width:600px){.legend-ai-top{height:65px}.legend-ai-chat{padding-top:12px}.legend-bubble{max-width:88%;font-size:14px}.legend-ai-welcome h1{font-size:34px}}
+</style>
+
+<div class="legend-ai-shell">
+<div class="legend-ai-top">
+<div class="legend-ai-brand"><div class="legend-ai-orb">L</div><div><div class="legend-ai-name">Legend AI</div><div class="legend-ai-status">● Web Search · No API key</div></div></div>
+<div style="display:flex;gap:7px;align-items:center"><button class="legend-ai-back" onclick="legendAISettings()">⚙</button><button class="legend-ai-back" onclick="closeLegendAI()">← Back</button></div>
+</div>
+
+
+<div id="legendAISetup" style="display:none;position:absolute;inset:72px 0 0 0;z-index:20;background:rgba(2,4,10,.97);backdrop-filter:blur(18px);padding:22px 16px;overflow:auto">
+<div style="width:100%;max-width:650px;margin:30px auto;background:rgba(255,255,255,.06);border:1px solid rgba(0,255,255,.22);border-radius:20px;padding:22px;box-shadow:0 0 35px rgba(0,255,255,.08)">
+<h2 style="color:#00ffff;margin-bottom:8px">Legend AI Web Search</h2>
+<p style="font-size:13px;line-height:1.6;opacity:.8;margin-bottom:16px">No API key is required. Legend AI searches public web sources and shows the information it finds with source links. This avoids Gemini/OpenAI API keys and their project quotas.</p>
+<div style="padding:12px;border-radius:12px;background:rgba(0,255,255,.06);font-size:12px;line-height:1.6;opacity:.85">For the most useful results, ask a specific question such as “What is the latest Android version?” or “Who invented the telephone?”</div>
+<div style="margin-top:16px"><button onclick="legendAISettings(false)" style="width:auto;padding:11px 15px">Close</button></div>
+</div></div>
+<div id="legendAIChat" class="legend-ai-chat">
+<div class="legend-ai-welcome"><h1>Legend AI</h1><p>Your personal web-search assistant. Ask a question and I’ll search for useful answers and sources.</p></div>
+</div>
+
+<div class="legend-ai-input-wrap">
+<div class="legend-quick">
+<button onclick="legendQuick('Who are you?')">Who are you?</button>
+<button onclick="legendQuick('Tell me a joke')">Tell me a joke</button>
+<button onclick="legendQuick('What can you do?')">What can you do?</button>
+<button onclick="legendQuick('Give me a coding tip')">Coding tip</button>
+</div>
+<div id="legendFilePanel" style="display:none;margin:8px 0;padding:12px;border:1px solid rgba(0,255,255,.22);border-radius:14px;background:rgba(255,255,255,.04)">
+<div style="font-size:12px;color:#73ffff;margin-bottom:7px">📎 Uploaded files</div>
+<div id="legendFileList" style="font-size:12px;opacity:.8"></div>
+<div id="legendFileStatus" style="font-size:12px;opacity:.8;margin-top:6px"></div>
+<button type="button" onclick="legendClearFiles()" style="width:auto!important;margin-top:8px;padding:7px 10px;background:rgba(255,255,255,.08);color:white">Clear files</button>
+</div>
+<input id="legendFileInput" class="legend-file-input" type="file" multiple style="display:none" onchange="legendUploadFiles(this.files)">
+<div id="legendAudioPanel" style="display:none;margin:8px 0;padding:12px;border:1px solid rgba(0,255,255,.22);border-radius:14px;background:rgba(0,255,255,.04)">
+<div style="font-size:12px;color:#73ffff;margin-bottom:7px">🎧 Audio understanding</div>
+<audio id="legendAudioPlayer" controls style="width:100%;display:none;margin-bottom:8px"></audio>
+<div id="legendAudioName" style="font-size:12px;opacity:.75;margin-bottom:7px"></div>
+<div id="legendAudioStatus" style="font-size:13px;opacity:.85">Choose an MP3/audio file to transcribe.</div>
+<div id="legendAudioTranscript" style="display:none;margin-top:9px;max-height:180px;overflow:auto;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);font-size:13px;line-height:1.5;white-space:pre-wrap"></div>
+</div>
+<input id="legendAudioInput" type="file" accept="audio/*,.mp3,.wav,.m4a,.ogg,.webm" style="display:none" onchange="legendUploadAudio(this.files)">
+<div class="legend-ai-input-box">
+<textarea id="legendAIInput" rows="1" placeholder="Message Legend AI..." onkeydown="legendAIKey(event)" oninput="legendResize(this)"></textarea>
+<button type="button" onclick="document.getElementById('legendFileInput').click()" style="width:46px!important;height:46px!important;padding:0!important;border-radius:14px!important;background:rgba(255,255,255,.1);color:#73ffff;font-size:26px" title="Upload files">+</button>
+<button type="button" onclick="document.getElementById('legendAudioInput').click()" style="width:46px!important;height:46px;padding:0!important;border-radius:14px!important;background:rgba(255,255,255,.1);color:#73ffff;font-size:20px" title="Upload audio">🎧</button>
+<button class="legend-send" onclick="legendSend()">➤</button>
+</div>
+</div>
+</div>
+</div>
+
+<audio id="bgMusic" loop>
+
+<source
+src="freefire-bgm.mp3"
+type="audio/mpeg">
+
+</audio>
+
+</body>
+  </html>
